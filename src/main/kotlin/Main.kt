@@ -141,13 +141,6 @@ fun main() = runBlocking {
     }
 }
 
-private fun FieldOccupation.summary() = "$championship: $team vs $otherTeam"
-
-private fun DateTime.toEventDateTime(): EventDateTime? =
-    EventDateTime()
-        .setDateTime(this)
-        .setTimeZone("Europe/Brussels")
-
 private fun parseFieldOccupations(data: SportlinkData) = data.data.map { columns ->
     val (date, time, teamChampionship) = columns
     val (team, championship) = teamChampionship.split(" - ")
@@ -171,10 +164,15 @@ private fun parseFieldOccupations(data: SportlinkData) = data.data.map { columns
     )
 }
 
-private fun Int.timeZone(): ZoneOffset? {
-    return LocalDate.of(this / 10000, this / 100 % 100, this % 100).atStartOfDay()
-        .atZone(zone).offset
-}
+private fun FieldOccupation.summary() = "${category.fraction?.let { "$it: "} ?: ""} $team vs $otherTeam [$championship]"
+
+private fun DateTime.toEventDateTime(): EventDateTime? =
+    EventDateTime()
+        .setDateTime(this)
+        .setTimeZone("Europe/Brussels")
+
+private fun Int.timeZone(): ZoneOffset? =
+    LocalDate.of(this / 10000, this / 100 % 100, this % 100).atStartOfDay().atZone(zone).offset
 
 private fun Int.formatTime(nf: DecimalFormat) =
     "${nf.format(this / 10000)}:${nf.format((this / 100) % 100)}:${nf.format(this % 100)}"
