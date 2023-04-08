@@ -22,12 +22,10 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
-import kotlin.time.Duration.Companion.days
 
 val SCOPES = listOf(CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR_EVENTS)
 val httpTransport: NetHttpTransport = GoogleNetHttpTransport.newTrustedTransport()
@@ -38,14 +36,14 @@ val fields = listOf(
     "c_6c7b57e27023124330349ddcd033d0fd6c37ea408b0f0e38e2c07c135b442cdd@group.calendar.google.com",
     "c_0b034e5f2034db98fb7caae1c7c3c2e65b7eda1377e2106f41756e2fdc8fb304@group.calendar.google.com"
 )
-val zone: ZoneId = java.time.ZoneId.of("Europe/Brussels")
+val zone: ZoneId = ZoneId.of("Europe/Brussels")
 
 
 @Throws(IOException::class)
 private fun getCredentials(httpTransport: NetHttpTransport): Credential? {
     // Load client secrets.
     val cred = Credentials()
-    val clientSecrets = GoogleClientSecrets.load(gsonFactory, cred.credentials?.reader())
+    val clientSecrets = GoogleClientSecrets.load(gsonFactory, cred.credentials.reader())
 
     // Build flow and trigger user authorization request.
     val flow =
