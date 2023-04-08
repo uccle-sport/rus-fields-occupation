@@ -1,3 +1,6 @@
+import java.io.InputStream
+
 class Credentials {
-    val credentials = Credentials::class.java.getResourceAsStream("/code_secret_client_80162616078-ck59di2lkenufprcp4ssdv6r68oh8j6q.apps.googleusercontent.com.json")
+    val credentials: InputStream = Credentials::class.java.getResourceAsStream("/client_oauth_secret.json") ?:
+        throw IllegalStateException("Credentials not found, please copy the OAUTH client secret into src/main/resources/client_oauth_secret.json")
 }
