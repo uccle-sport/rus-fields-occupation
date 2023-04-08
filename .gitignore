@@ -1,4 +1,4 @@
-code_secret*
+client_oauth_secret*
 StoredCredential
 .gradle
 .idea
